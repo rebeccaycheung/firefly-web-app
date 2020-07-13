@@ -4,6 +4,7 @@ import {
   faBalanceScale, faCartPlus, faCalendarPlus, faMoneyBill,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import VueApexCharts from 'vue-apexcharts';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -13,6 +14,10 @@ library.add(
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+Vue.use(VueApexCharts);
+
+Vue.component('apexchart', VueApexCharts);
 
 Vue.config.productionTip = false;
 
