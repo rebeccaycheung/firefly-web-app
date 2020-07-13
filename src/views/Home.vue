@@ -7,7 +7,12 @@
       <Dashboard :balance="balance" :spending="spending" :bills="bills" :netWorth="netWorth"/>
     </div>
     <div class="spending">
+      <Heading title="Spending" />
       <Spending :options="options" :series="series" />
+    </div>
+    <div class="summary">
+      <Heading title="Summary" />
+      <Summary />
     </div>
   </div>
 </template>
@@ -18,6 +23,7 @@ import axios from 'axios';
 import Heading from '@/components/Heading.vue';
 import Dashboard from '@/components/Dashboard.vue';
 import Spending from '@/components/Spending.vue';
+import Summary from '@/components/Summary.vue';
 
 export default {
   name: 'Home',
@@ -25,6 +31,7 @@ export default {
     Heading,
     Dashboard,
     Spending,
+    Summary,
   },
   data() {
     return {
@@ -35,9 +42,7 @@ export default {
       options: {
         labels: [],
         dataLabels: {
-          style: {
-            colors: ['#FFFFFF'],
-          },
+          enabled: false,
         },
         legend: {
           labels: {
@@ -45,6 +50,9 @@ export default {
           },
           markers: {
             radius: 3,
+          },
+          onItemClick: {
+            toggleDataSeries: false,
           },
         },
         stroke: {
@@ -59,6 +67,7 @@ export default {
                 total: {
                   show: true,
                   showAlways: true,
+                  label: 'SPENT',
                   color: '#FFFFFF',
                 },
                 value: {
@@ -126,7 +135,6 @@ export default {
         .then((response) => {
           Object.keys(response.data).forEach((value) => {
             if ((response.data[value].label).includes('Spent')) {
-              console.log(response.data[value]);
               Object.keys(response.data[value].entries).forEach((key) => {
                 const amount = Number(response.data[value].entries[key]);
                 if (amount > 0) {
