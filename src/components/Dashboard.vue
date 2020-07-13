@@ -1,5 +1,5 @@
 <template>
-  <div class="heading">
+  <div class="dashboard">
       <div class="item">
           <font-awesome-icon icon="balance-scale" class="icon"/>
           <div class="text">
@@ -39,7 +39,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Heading extends Vue {
+export default class Dashboard extends Vue {
     @Prop() private balance!: string;
 
     @Prop() private spending!: string;
@@ -52,11 +52,7 @@ export default class Heading extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-    text-transform: uppercase;
-}
-
-.heading {
+.dashboard {
     display: flex;
     justify-content: space-around;
     background-color: #44475A;
