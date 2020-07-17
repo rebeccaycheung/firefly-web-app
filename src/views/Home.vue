@@ -6,21 +6,23 @@
     <div class="dashboard">
       <Dashboard :balance="balance" :spending="spending" :bills="bills" :netWorth="netWorth"/>
     </div>
-    <div class="links">
-      <Heading title="Quick Links" />
-      <QuickLinks />
-    </div>
-    <div class="spending">
-      <Heading title="Spending" />
-      <Spending :options="options" :series="series" />
+    <div class="section">
+      <div class="links">
+        <Heading title="Quick Links" />
+        <QuickLinks />
+      </div>
+      <div class="spending">
+        <Heading title="Spending" />
+        <Spending :options="options" :series="series" />
+      </div>
+      <div class="bills">
+        <Heading title="Expected Bills" />
+        <ExpectedBills :bills="expectedBills" />
+      </div>
     </div>
     <div class="summary">
       <Heading title="Summary" />
-      <Summary :items="items" />
-    </div>
-    <div class="bills">
-      <Heading title="Expected Bills" />
-      <ExpectedBills :bills="expectedBills" />
+      <Summary :items="accounts" />
     </div>
   </div>
 </template>
@@ -92,7 +94,7 @@ export default {
         },
       },
       series: [],
-      items: {},
+      accounts: {},
       expectedBills: {},
     };
   },
@@ -168,8 +170,19 @@ export default {
         config,
       )
         .then((response) => {
-          this.items = response.data.data;
+          this.formatAccountData(response.data.data);
         });
+    },
+    formatAccountData(data) {
+      Object.keys(data).forEach((value, index) => {
+        const { type, name } = data[value].attributes;
+        if (type === 'asset') {
+          this.$set(this.accounts, name, {
+            id: index,
+            amount: data[value].attributes.current_balance,
+          });
+        }
+      });
     },
     fetchExpectedBills() {
       const config = this.authorise();
@@ -226,5 +239,15 @@ export default {
 .dashboard {
   flex: 0 0 100%;
   margin-bottom: 1rem;
+}
+
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.bills {
+  flex: 0 0 100%;
 }
 </style>

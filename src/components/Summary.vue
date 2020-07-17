@@ -1,32 +1,30 @@
 <template>
   <div class="summary">
-    <div v-for="(item, index) in items" :key="item.id">
-      <div v-if="item.attributes.type === 'asset'" :key="item.id">
-        <div v-if="index != Object.keys(items).length - 1 && index != 0">
-          <div class="row">
-            <div class="name">{{ item.attributes.name }}</div>
-            <div class="amount">
-              ${{ item.attributes.current_balance }}
-              <font-awesome-icon icon="arrow-right" class="icon"/>
-            </div>
+    <div v-for="(key, value) in items" :key="key.id">
+      <div v-if="key.id != Object.keys(items).length - 1 && key.id != 0">
+        <div class="row">
+          <div class="name">{{ value }}</div>
+          <div class="amount">
+            ${{ key.amount }}
+            <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
-        <div v-else-if="index == 0">
-          <div class="first-row">
-            <div class="name">{{ item.attributes.name }}</div>
-            <div class="amount">
-              ${{ item.attributes.current_balance }}
-              <font-awesome-icon icon="arrow-right" class="icon"/>
-            </div>
+      </div>
+      <div v-else-if="key.id == 0">
+        <div class="first-row">
+          <div class="name">{{ value }}</div>
+          <div class="amount">
+            ${{ key.amount }}
+            <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
-        <div v-else>
-          <div class="last-row">
-            <div class="name">{{ item.attributes.name }}</div>
-            <div class="amount">
-              ${{ item.attributes.current_balance }}
-              <font-awesome-icon icon="arrow-right" class="icon"/>
-            </div>
+      </div>
+      <div v-else>
+        <div class="last-row">
+          <div class="name">{{ value }}</div>
+          <div class="amount">
+            ${{ key.amount }}
+            <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
       </div>
