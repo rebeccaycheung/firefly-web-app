@@ -1,7 +1,7 @@
 <template>
   <div class="summary">
     <div v-for="(key, value, index) in items" :key="key.id">
-      <div v-if="index != Object.keys(items).length - 1 && key.id != 0">
+      <div v-if="index != Object.keys(items).length - 1 && index != 0">
         <div class="row">
           <div class="name">{{ value }}</div>
           <div class="amount">
@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-      <div v-else-if="key.id == 0">
+      <div v-else-if="index == 0">
         <div class="first-row">
           <div class="name">{{ value }}</div>
           <div class="amount">
