@@ -5,13 +5,6 @@
 </template>
 
 <style>
-@font-face {
-  font-family: 'Roboto';
-  src: url('/assets/fonts/Roboto-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
   color: #FFFFFF;
   background-color: #282A37;
