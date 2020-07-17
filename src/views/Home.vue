@@ -6,6 +6,10 @@
     <div class="dashboard">
       <Dashboard :balance="balance" :spending="spending" :bills="bills" :netWorth="netWorth"/>
     </div>
+    <div class="links">
+      <Heading title="Quick Links" />
+      <QuickLinks />
+    </div>
     <div class="spending">
       <Heading title="Spending" />
       <Spending :options="options" :series="series" />
@@ -16,7 +20,7 @@
     </div>
     <div class="bills">
       <Heading title="Expected Bills" />
-      <ExpectedBills :bills="expectedBills"/>
+      <ExpectedBills :bills="expectedBills" />
     </div>
   </div>
 </template>
@@ -29,6 +33,7 @@ import Dashboard from '@/components/Dashboard.vue';
 import Spending from '@/components/Spending.vue';
 import Summary from '@/components/Summary.vue';
 import ExpectedBills from '@/components/ExpectedBills.vue';
+import QuickLinks from '@/components/QuickLinks.vue';
 
 export default {
   name: 'Home',
@@ -38,6 +43,7 @@ export default {
     Spending,
     Summary,
     ExpectedBills,
+    QuickLinks,
   },
   data() {
     return {
@@ -180,16 +186,20 @@ export default {
         config,
       )
         .then((response) => {
-          this.expectedBills = response.data.data;
-          this.formatExpectedBills();
+          this.formatExpectedBills(response.data.data);
         });
     },
-    formatExpectedBills() {
-      // let bills = {};
-      Object.keys(this.expectedBills).forEach((value) => {
-        // if (this.expectedBills[value].attributes.next_expected_match === 'asset') {
-        console.log(this.expectedBills[value].attributes.next_expected_match);
-        // }
+    formatExpectedBills(data) {
+      Object.keys(data).forEach((value, index) => {
+        const { name } = data[value].attributes;
+        const payDates = data[value].attributes.pay_dates;
+        const paid = data[value].attributes.paid_dates;
+        if (payDates.length > 0) {
+          this.$set(this.expectedBills, name, { id: index, paid: false });
+          if (paid.length > 0) {
+            this.$set(this.expectedBills, name, { id: index, paid: true });
+          }
+        }
       });
     },
   },

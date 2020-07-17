@@ -1,0 +1,62 @@
+<template>
+    <div class="quick-links">
+        <div class="links">
+            <div class="link">
+                <font-awesome-icon icon="plus" class="icon pink-icon"/>
+                Add transaction
+            </div>
+            <div class="link last">
+                <font-awesome-icon icon="cart-plus" class="icon pink-icon"/>
+                Edit budget
+            </div>
+        </div>
+        <div class="links">
+            <div class="link">
+                <font-awesome-icon icon="list-ul" class="icon blue-icon"/>
+                Edit accounts
+            </div>
+            <div class="link last">
+                <font-awesome-icon icon="calendar-plus" class="icon blue-icon"/>
+                Edit bills
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class QuickLinks extends Vue {
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.links {
+    background-color: #44475A;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.link {
+    padding: 2rem;
+    border-bottom: 3px solid #282A37;
+}
+
+.last {
+    border-bottom: none;
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.blue-icon {
+    color: #6CECFF;
+}
+
+.pink-icon {
+    color: #FF6DC9;
+}
+</style>

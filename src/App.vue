@@ -5,6 +5,13 @@
 </template>
 
 <style>
+@font-face {
+  font-family: 'Roboto';
+  src: url('/assets/fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   color: #FFFFFF;
   background-color: #282A37;
@@ -13,7 +20,7 @@ body {
 }
 
 #app {
-  font-family: Avenir;
+  font-family: BlinkMacSystemFont, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
