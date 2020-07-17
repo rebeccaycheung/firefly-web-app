@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faBalanceScale, faCartPlus, faCalendarPlus, faMoneyBill,
+  faBalanceScale, faCartPlus, faCalendarPlus, faMoneyBill, faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueApexCharts from 'vue-apexcharts';
@@ -10,7 +10,7 @@ import router from './router';
 import store from './store';
 
 library.add(
-  faBalanceScale, faCartPlus, faCalendarPlus, faMoneyBill,
+  faBalanceScale, faCartPlus, faCalendarPlus, faMoneyBill, faArrowRight,
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

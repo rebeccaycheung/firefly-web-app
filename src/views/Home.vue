@@ -12,7 +12,11 @@
     </div>
     <div class="summary">
       <Heading title="Summary" />
-      <Summary />
+      <Summary :items="items" />
+    </div>
+    <div class="bills">
+      <Heading title="Expected Bills" />
+      <ExpectedBills :bills="expectedBills"/>
     </div>
   </div>
 </template>
@@ -24,6 +28,7 @@ import Heading from '@/components/Heading.vue';
 import Dashboard from '@/components/Dashboard.vue';
 import Spending from '@/components/Spending.vue';
 import Summary from '@/components/Summary.vue';
+import ExpectedBills from '@/components/ExpectedBills.vue';
 
 export default {
   name: 'Home',
@@ -32,6 +37,7 @@ export default {
     Dashboard,
     Spending,
     Summary,
+    ExpectedBills,
   },
   data() {
     return {
@@ -80,6 +86,8 @@ export default {
         },
       },
       series: [],
+      items: {},
+      expectedBills: {},
     };
   },
   methods: {
@@ -146,10 +154,50 @@ export default {
           });
         });
     },
+    fetchAccount() {
+      const config = this.authorise();
+
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}accounts`,
+        config,
+      )
+        .then((response) => {
+          this.items = response.data.data;
+        });
+    },
+    fetchExpectedBills() {
+      const config = this.authorise();
+
+      const params = {
+        start: '2020-07-01',
+        end: '2020-07-31',
+      };
+
+      config.params = params;
+
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}bills`,
+        config,
+      )
+        .then((response) => {
+          this.expectedBills = response.data.data;
+          this.formatExpectedBills();
+        });
+    },
+    formatExpectedBills() {
+      // let bills = {};
+      Object.keys(this.expectedBills).forEach((value) => {
+        // if (this.expectedBills[value].attributes.next_expected_match === 'asset') {
+        console.log(this.expectedBills[value].attributes.next_expected_match);
+        // }
+      });
+    },
   },
   beforeMount() {
     this.fetchSummary();
     this.fetchTransactionsByCategories();
+    this.fetchAccount();
+    this.fetchExpectedBills();
   },
 };
 </script>
@@ -158,6 +206,7 @@ export default {
 .home {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .heading {

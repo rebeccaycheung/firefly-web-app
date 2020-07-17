@@ -1,42 +1,45 @@
 <template>
   <div class="summary">
-    <div v-for="item in items" v-bind:key="item.id">
-      {{ items }}
+    <div v-for="(item, index) in items" :key="item.id">
+      <div v-if="item.attributes.type === 'asset'" :key="item.id">
+        <div v-if="index != Object.keys(items).length - 1 && index != 0">
+          <div class="row">
+            <div class="name">{{ item.attributes.name }}</div>
+            <div class="amount">
+              ${{ item.attributes.current_balance }}
+              <font-awesome-icon icon="arrow-right" class="icon"/>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="index == 0">
+          <div class="first-row">
+            <div class="name">{{ item.attributes.name }}</div>
+            <div class="amount">
+              ${{ item.attributes.current_balance }}
+              <font-awesome-icon icon="arrow-right" class="icon"/>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="last-row">
+            <div class="name">{{ item.attributes.name }}</div>
+            <div class="amount">
+              ${{ item.attributes.current_balance }}
+              <font-awesome-icon icon="arrow-right" class="icon"/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import axios from 'axios';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Summary extends Vue {
-  items: Record<string, any> = {}
-
-  fetchAccounts = () => {
-    const token = process.env.VUE_APP_TOKEN;
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        accept: 'application/json',
-      },
-    };
-
-    axios.get(
-      `${process.env.VUE_APP_API_BASE_URL}accounts`,
-      config,
-    )
-      .then((response) => {
-        this.items = response.data.data;
-        console.log(this.items);
-      });
-  }
-
-  mounted() {
-    this.fetchAccounts();
-  }
+  @Prop() private items!: Record<string, string>;
 }
 </script>
 
@@ -44,7 +47,36 @@ export default class Summary extends Vue {
 <style scoped>
 .summary {
     background-color: #44475A;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 8px;
+    min-width: 400px;
+}
+
+.row {
+  padding: 1rem 1rem 2rem 1rem;
+  border-bottom: 2px solid #282A37;
+}
+
+.first-row {
+  padding: 0rem 1rem 2rem 1rem;
+  border-bottom: 2px solid #282A37;
+}
+
+.last-row {
+  padding: 1rem 1rem 1rem 1rem;
+  border-bottom: none;
+}
+
+.name {
+  float: left;
+}
+
+.amount {
+  float: right;
+}
+
+.icon {
+  color: #6CECFF;
+  margin-left: 5px;
 }
 </style>
