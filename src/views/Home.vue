@@ -20,6 +20,10 @@
       <Heading title="Summary" />
       <Summary :items="accounts" />
     </div>
+    <div class="transaction">
+      <Heading title="Recent Transaction" />
+      <Transactions :transactions="transactions" />
+    </div>
   </div>
 </template>
 
@@ -32,6 +36,7 @@ import Spending from '@/components/Spending.vue';
 import Summary from '@/components/Summary.vue';
 import ExpectedBills from '@/components/ExpectedBills.vue';
 import QuickLinks from '@/components/QuickLinks.vue';
+import Transactions from '@/components/Transactions.vue';
 
 export default {
   name: 'Home',
@@ -42,6 +47,7 @@ export default {
     Summary,
     ExpectedBills,
     QuickLinks,
+    Transactions,
   },
   data() {
     return {
