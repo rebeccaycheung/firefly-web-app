@@ -33,10 +33,14 @@ export default class QuickLinks extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.quick-links {
+    max-height: 100%;
+}
+
 .links {
     background-color: #44475A;
     border-radius: 8px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .link {

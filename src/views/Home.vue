@@ -1,24 +1,20 @@
 <template>
   <div class="home">
-    <div class="heading">
-      <Heading title="Dashboard" />
-    </div>
     <div class="dashboard">
+      <Heading title="Dashboard" />
       <Dashboard :balance="balance" :spending="spending" :bills="bills" :netWorth="netWorth"/>
     </div>
-    <div class="section">
-      <div class="links">
-        <Heading title="Quick Links" />
-        <QuickLinks />
-      </div>
-      <div class="spending">
-        <Heading title="Spending" />
-        <Spending :options="options" :series="series" />
-      </div>
-      <div class="bills">
-        <Heading title="Expected Bills" />
-        <ExpectedBills :bills="expectedBills" />
-      </div>
+    <div class="links">
+      <Heading title="Quick Links" />
+      <QuickLinks />
+    </div>
+    <div class="spending">
+      <Heading title="Spending" />
+      <Spending :options="options" :series="series" />
+    </div>
+    <div class="bills">
+      <Heading title="Expected Bills" />
+      <ExpectedBills :bills="expectedBills" />
     </div>
     <div class="summary">
       <Heading title="Summary" />
@@ -227,27 +223,48 @@ export default {
 
 <style scoped>
 .home {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.heading {
-  flex: 0 0 100%;
-}
-
-.dashboard {
-  flex: 0 0 100%;
-  margin-bottom: 1rem;
-}
-
-.section {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat( 3, 1fr );
+  grid-template-rows: auto;
+  grid-auto-flow: column;
+  column-gap: 10px;
+  row-gap: 15px;
+  justify-items: stretch;
   align-items: stretch;
 }
 
+.dashboard {
+  grid-column-start: 1;
+  grid-column-end: 12;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.links {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.spending {
+  grid-column-start: 2;
+  grid-column-end: 6;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.summary {
+  grid-column-start: 6;
+  grid-column-end: 12;
+  grid-row-start: 2;
+  grid-row-end: 4;
+}
+
 .bills {
-  flex: 0 0 100%;
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 3;
+  grid-row-end: 4;
 }
 </style>
