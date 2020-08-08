@@ -2,7 +2,7 @@
   <div class="home">
     <div class="dashboard">
       <Heading title="Dashboard" />
-      <Dashboard :balance="balance" :spending="spending" :bills="bills" :netWorth="netWorth"/>
+      <Dashboard />
     </div>
     <div class="links">
       <Heading title="Quick Links" />
@@ -51,10 +51,6 @@ export default {
   },
   data() {
     return {
-      balance: 0,
-      spending: 0,
-      bills: 0,
-      netWorth: 0,
       options: {
         labels: [],
         dataLabels: {
@@ -113,29 +109,6 @@ export default {
       };
 
       return config;
-    },
-    fetchSummary() {
-      const config = this.authorise();
-
-      const params = {
-        start: '2020-07-01',
-        end: '2020-07-31',
-      };
-
-      config.params = params;
-
-      axios.get(
-        `${process.env.VUE_APP_API_BASE_URL}summary/basic`,
-        config,
-      )
-        .then((response) => {
-          this.balance = response.data['balance-in-AUD'].monetary_value;
-          const spending = response.data['left-to-spend-in-AUD'].monetary_value;
-          this.bills = -response.data['bills-unpaid-in-AUD'].monetary_value;
-          this.netWorth = response.data['net-worth-in-AUD'].monetary_value;
-
-          this.spending = spending - this.bills;
-        });
     },
     fetchTransactionsByCategories() {
       const config = this.authorise();
@@ -249,7 +222,7 @@ export default {
     },
   },
   beforeMount() {
-    this.fetchSummary();
+    // this.fetchSummary();
     this.fetchTransactionsByCategories();
     this.fetchAccount();
     this.fetchExpectedBills();
