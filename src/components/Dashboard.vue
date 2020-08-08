@@ -66,13 +66,31 @@ export default mixins(authoriseMixins).extend({
         config,
       )
         .then((response) => {
-          console.log(response.data);
           this.balance = response.data['balance-in-AUD'].monetary_value;
-          const spending = response.data['left-to-spend-in-AUD'].monetary_value;
           this.bills = -response.data['bills-unpaid-in-AUD'].monetary_value;
           this.netWorth = response.data['net-worth-in-AUD'].monetary_value;
+        });
 
-          this.spending = spending - this.bills;
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}budgets`,
+        config,
+      )
+        .then((response) => {
+          Object.keys(response.data.data).forEach((value) => {
+            if ((response.data.data[value].attributes.name).includes('Spending')) {
+              const spending = response.data.data[value].attributes.spent[0].sum;
+              this.fetchSpendingLimit(response.data.data[value].id, config, spending);
+            }
+          });
+        });
+    },
+    fetchSpendingLimit(id: number, config: Record<string, any>, spending: number) {
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}budgets/${id}/limits`,
+        config,
+      )
+        .then((response) => {
+          this.spending = response.data.data[0].attributes.amount - -spending;
         });
     },
   },
