@@ -24,14 +24,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 
-@Component
-export default class QuickLinks extends Vue {
-}
+export default Vue.extend({
+  name: 'QuickLinks',
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .quick-links {
     max-height: 100%;

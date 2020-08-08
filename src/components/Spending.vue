@@ -5,17 +5,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 
-@Component
-export default class Spending extends Vue {
-    @Prop() private options!: Record<string, string>;
-
-    @Prop() private series!: Array<Int32List>;
-}
+export default Vue.extend({
+  name: 'Spending',
+  props: {
+    options: Object,
+    series: Array,
+  },
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .spending {
     background-color: #44475A;

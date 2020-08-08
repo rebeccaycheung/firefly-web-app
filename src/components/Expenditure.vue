@@ -1,39 +1,30 @@
 <template>
-  <div class="bills">
-    <div v-for="(key, value, index) in bills" :key="key.id">
-      <div v-if="index != Object.keys(bills).length - 1 && index != 0">
+  <div class="expenditure">
+    <div v-for="(key, value, index) in expenditure" :key="key.id">
+      <div v-if="index != Object.keys(expenditure).length - 1 && index != 0">
         <div class="row">
-          <div class="name">{{ value }} </div>
-          <div v-if="key.paid" class="paid">
-            Paid
-            <font-awesome-icon icon="check-circle" class="icon"/>
-          </div>
-          <div v-else class="paid">
-            Not paid
+          <div class="name">{{ value }}</div>
+          <div class="amount">
+            ${{ key.amount }}
+            <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
       </div>
       <div v-else-if="index == 0">
         <div class="first-row">
           <div class="name">{{ value }}</div>
-          <div v-if="key.paid" class="paid">
-            Paid
-            <font-awesome-icon icon="check-circle" class="icon"/>
-          </div>
-          <div v-else class="paid">
-            Not paid
+          <div class="amount">
+            ${{ key.amount }}
+            <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
       </div>
       <div v-else>
         <div class="last-row">
           <div class="name">{{ value }}</div>
-          <div v-if="key.paid" class="paid">
-            Paid
-            <font-awesome-icon icon="check-circle" class="icon"/>
-          </div>
-          <div v-else class="paid">
-            Not paid
+          <div class="amount">
+            ${{ key.amount }}
+            <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
       </div>
@@ -45,19 +36,18 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  name: 'ExpectedBills',
+  name: 'Expenditure',
   props: {
-    bills: Object,
+    expenditure: Object,
   },
 });
 </script>
 
 <style scoped>
-.bills {
+.expenditure {
     background-color: #44475A;
     padding: 1rem;
     border-radius: 8px;
-    min-width: 400px;
 }
 
 .row {
@@ -79,12 +69,12 @@ export default Vue.extend({
   float: left;
 }
 
-.paid {
+.amount {
   float: right;
 }
 
 .icon {
-  color: #00FF68;
+  color: #6CECFF;
   margin-left: 5px;
 }
 </style>

@@ -20,9 +20,9 @@
       <Heading title="Summary" />
       <Summary :items="accounts" />
     </div>
-    <div class="transaction">
-      <Heading title="Recent Transaction" />
-      <Transactions :transactions="transactions" />
+    <div class="expenditure">
+      <Heading title="Recent Expenditure" />
+      <Expenditure :expenditure="expenditure" />
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@ import Spending from '@/components/Spending.vue';
 import Summary from '@/components/Summary.vue';
 import ExpectedBills from '@/components/ExpectedBills.vue';
 import QuickLinks from '@/components/QuickLinks.vue';
-import Transactions from '@/components/Transactions.vue';
+import Expenditure from '@/components/Expenditure.vue';
 
 export default {
   name: 'Home',
@@ -47,7 +47,7 @@ export default {
     Summary,
     ExpectedBills,
     QuickLinks,
-    Transactions,
+    Expenditure,
   },
   data() {
     return {
@@ -98,6 +98,7 @@ export default {
       series: [],
       accounts: {},
       expectedBills: {},
+      expenditure: {},
     };
   },
   methods: {
@@ -217,18 +218,48 @@ export default {
         }
       });
     },
+    fetchExpenditure() {
+      const config = this.authorise();
+
+      const params = {
+        start: '2020-07-01',
+        end: '2020-07-31',
+      };
+
+      config.params = params;
+
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}transactions`,
+        config,
+      )
+        .then((response) => {
+          this.formatExpenditure(response.data.data);
+        });
+    },
+    formatExpenditure(data) {
+      Object.keys(data).forEach((value) => {
+        const { transactions } = data[value].attributes;
+        Object.keys(transactions).forEach((item, index) => {
+          const { amount, description, type } = transactions[item];
+          if (type === 'withdrawal') {
+            this.$set(this.expenditure, description, { id: index, amount });
+          }
+        });
+      });
+    },
   },
   beforeMount() {
     this.fetchSummary();
     this.fetchTransactionsByCategories();
     this.fetchAccount();
     this.fetchExpectedBills();
+    this.fetchExpenditure();
   },
 };
 </script>
 
 <style scoped>
-.home {
+/* .home {
   display: grid;
   grid-template-columns: repeat( 3, 1fr );
   grid-template-rows: auto;
@@ -272,5 +303,5 @@ export default {
   grid-column-end: 6;
   grid-row-start: 3;
   grid-row-end: 4;
-}
+} */
 </style>

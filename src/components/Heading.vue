@@ -5,15 +5,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 
-@Component
-export default class Heading extends Vue {
-  @Prop() private title!: string;
-}
+export default Vue.extend({
+  name: 'Heading',
+  props: {
+    title: String,
+  },
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1 {
     text-transform: uppercase;

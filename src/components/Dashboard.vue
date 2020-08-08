@@ -36,21 +36,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 
-@Component
-export default class Dashboard extends Vue {
-    @Prop() private balance!: string;
-
-    @Prop() private spending!: string;
-
-    @Prop() private bills!: string;
-
-    @Prop() private netWorth!: string;
-}
+export default Vue.extend({
+  name: 'Dashboard',
+  props: {
+    balance: String,
+    spending: String,
+    bills: String,
+    netWorth: String,
+  },
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .dashboard {
     display: flex;

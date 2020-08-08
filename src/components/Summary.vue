@@ -33,15 +33,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 
-@Component
-export default class Summary extends Vue {
-  @Prop() private items!: Record<string, string>;
-}
+export default Vue.extend({
+  name: 'Summary',
+  props: {
+    items: Object,
+  },
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .summary {
     background-color: #44475A;
