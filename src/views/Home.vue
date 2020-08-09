@@ -10,7 +10,7 @@
     </div>
     <div class="spending">
       <Heading title="Spending" />
-      <Spending :options="options" :series="series" />
+      <Spending />
     </div>
     <div class="bills">
       <Heading title="Expected Bills" />
@@ -51,47 +51,6 @@ export default {
   },
   data() {
     return {
-      options: {
-        labels: [],
-        dataLabels: {
-          enabled: false,
-        },
-        legend: {
-          labels: {
-            colors: '#FFFFFF',
-          },
-          markers: {
-            radius: 3,
-          },
-          onItemClick: {
-            toggleDataSeries: false,
-          },
-        },
-        stroke: {
-          show: false,
-        },
-        plotOptions: {
-          pie: {
-            donut: {
-              size: '60%',
-              labels: {
-                show: true,
-                total: {
-                  show: true,
-                  showAlways: true,
-                  label: 'SPENT',
-                  color: '#FFFFFF',
-                },
-                value: {
-                  show: true,
-                  color: '#FFFFFF',
-                },
-              },
-            },
-          },
-        },
-      },
-      series: [],
       accounts: {},
       expectedBills: {},
       expenditure: {},
@@ -109,34 +68,6 @@ export default {
       };
 
       return config;
-    },
-    fetchTransactionsByCategories() {
-      const config = this.authorise();
-
-      const params = {
-        start: '2020-07-01',
-        end: '2020-07-31',
-      };
-
-      config.params = params;
-
-      axios.get(
-        `${process.env.VUE_APP_API_BASE_URL}chart/category/overview`,
-        config,
-      )
-        .then((response) => {
-          Object.keys(response.data).forEach((value) => {
-            if ((response.data[value].label).includes('Spent')) {
-              Object.keys(response.data[value].entries).forEach((key) => {
-                const amount = Number(response.data[value].entries[key]);
-                if (amount > 0) {
-                  this.series.push(amount);
-                  this.options.labels.push(key);
-                }
-              });
-            }
-          });
-        });
     },
     fetchAccount() {
       const config = this.authorise();
@@ -222,8 +153,6 @@ export default {
     },
   },
   beforeMount() {
-    // this.fetchSummary();
-    this.fetchTransactionsByCategories();
     this.fetchAccount();
     this.fetchExpectedBills();
     this.fetchExpenditure();
