@@ -1,6 +1,6 @@
 <template>
   <div class="expenditure">
-    <div v-for="(key, value, index) in expenditure" :key="key.id">
+    <div v-for="(key, value, index) in expenditure" :key="index">
       <div v-if="index != Object.keys(expenditure).length - 1 && index != 0">
         <div class="row">
           <div class="name">{{ value }}</div>
@@ -33,12 +33,62 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import mixins from 'vue-typed-mixins';
+import axios from 'axios';
+import authoriseMixins from '@/mixins/authoriseMixins';
 
-export default Vue.extend({
+export default mixins(authoriseMixins).extend({
   name: 'Expenditure',
-  props: {
-    expenditure: Object,
+  data() {
+    return {
+      expenditure: {},
+    };
+  },
+  methods: {
+    authorise() {
+      const token = process.env.VUE_APP_TOKEN;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          accept: 'application/json',
+        },
+      };
+
+      return config;
+    },
+    fetchExpenditure() {
+      const config = this.authorise();
+
+      const params = {
+        start: '2020-07-01',
+        end: '2020-07-31',
+      };
+
+      config.params = params;
+
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}transactions`,
+        config,
+      )
+        .then((response) => {
+          this.formatExpenditure(response.data.data);
+        });
+    },
+    formatExpenditure(data: Record<string, any>) {
+      Object.keys(data).forEach((value) => {
+        const { transactions } = data[value].attributes;
+        Object.keys(transactions).forEach((item, index) => {
+          const { amount, description, type } = transactions[item];
+          if (type === 'withdrawal') {
+            this.$set(this.expenditure, description, { id: index, amount });
+          }
+        });
+      });
+    },
+  },
+  created() {
+    this.fetchExpenditure();
   },
 });
 </script>
