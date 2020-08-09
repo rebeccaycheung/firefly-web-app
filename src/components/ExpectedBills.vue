@@ -1,7 +1,7 @@
 <template>
   <div class="bills">
-    <div v-for="(key, value, index) in bills" :key="key.id">
-      <div v-if="index != Object.keys(bills).length - 1 && index != 0">
+    <div v-for="(key, value, index) in expectedBills" :key="key.id">
+      <div v-if="index != Object.keys(expectedBills).length - 1 && index != 0">
         <div class="row">
           <div class="name">{{ value }} </div>
           <div v-if="key.paid" class="paid">
@@ -42,12 +42,52 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import mixins from 'vue-typed-mixins';
+import axios from 'axios';
+import authoriseMixins from '@/mixins/authoriseMixins';
 
-export default Vue.extend({
+export default mixins(authoriseMixins).extend({
   name: 'ExpectedBills',
-  props: {
-    bills: Object,
+  data() {
+    return {
+      expectedBills: {},
+    };
+  },
+  methods: {
+    fetchExpectedBills() {
+      const config = this.authorise();
+
+      const params = {
+        start: '2020-07-01',
+        end: '2020-07-31',
+      };
+
+      config.params = params;
+
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}bills`,
+        config,
+      )
+        .then((response) => {
+          this.formatExpectedBills(response.data.data);
+        });
+    },
+    formatExpectedBills(data: Record<string, any>) {
+      Object.keys(data).forEach((value, index) => {
+        const { name } = data[value].attributes;
+        const payDates = data[value].attributes.pay_dates;
+        const paid = data[value].attributes.paid_dates;
+        if (payDates.length > 0) {
+          this.$set(this.expectedBills, name, { id: index, paid: false });
+          if (paid.length > 0) {
+            this.$set(this.expectedBills, name, { id: index, paid: true });
+          }
+        }
+      });
+    },
+  },
+  created() {
+    this.fetchExpectedBills();
   },
 });
 </script>

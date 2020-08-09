@@ -1,7 +1,7 @@
 <template>
   <div class="summary">
-    <div v-for="(key, value, index) in items" :key="key.id">
-      <div v-if="index != Object.keys(items).length - 1 && index != 0">
+    <div v-for="(key, value, index) in accounts" :key="key.id">
+      <div v-if="index != Object.keys(accounts).length - 1 && index != 0">
         <div class="row">
           <div class="name">{{ value }}</div>
           <div class="amount">
@@ -33,12 +33,43 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import mixins from 'vue-typed-mixins';
+import axios from 'axios';
+import authoriseMixins from '@/mixins/authoriseMixins';
 
-export default Vue.extend({
+export default mixins(authoriseMixins).extend({
   name: 'Summary',
-  props: {
-    items: Object,
+  data() {
+    return {
+      accounts: {},
+    };
+  },
+  methods: {
+    fetchAccount() {
+      const config = this.authorise();
+
+      axios.get(
+        `${process.env.VUE_APP_API_BASE_URL}accounts`,
+        config,
+      )
+        .then((response) => {
+          this.formatAccountData(response.data.data);
+        });
+    },
+    formatAccountData(data: Record<string, any>) {
+      Object.keys(data).forEach((value, index) => {
+        const { type, name } = data[value].attributes;
+        if (type === 'asset') {
+          this.$set(this.accounts, name, {
+            id: index,
+            amount: data[value].attributes.current_balance,
+          });
+        }
+      });
+    },
+  },
+  created() {
+    this.fetchAccount();
   },
 });
 </script>

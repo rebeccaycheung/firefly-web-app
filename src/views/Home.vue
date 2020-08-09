@@ -14,11 +14,11 @@
     </div>
     <div class="bills">
       <Heading title="Expected Bills" />
-      <ExpectedBills :bills="expectedBills" />
+      <ExpectedBills />
     </div>
     <div class="summary">
       <Heading title="Summary" />
-      <Summary :items="accounts" />
+      <Summary />
     </div>
     <div class="expenditure">
       <Heading title="Recent Expenditure" />
@@ -51,8 +51,6 @@ export default {
   },
   data() {
     return {
-      accounts: {},
-      expectedBills: {},
       expenditure: {},
     };
   },
@@ -68,59 +66,6 @@ export default {
       };
 
       return config;
-    },
-    fetchAccount() {
-      const config = this.authorise();
-
-      axios.get(
-        `${process.env.VUE_APP_API_BASE_URL}accounts`,
-        config,
-      )
-        .then((response) => {
-          this.formatAccountData(response.data.data);
-        });
-    },
-    formatAccountData(data) {
-      Object.keys(data).forEach((value, index) => {
-        const { type, name } = data[value].attributes;
-        if (type === 'asset') {
-          this.$set(this.accounts, name, {
-            id: index,
-            amount: data[value].attributes.current_balance,
-          });
-        }
-      });
-    },
-    fetchExpectedBills() {
-      const config = this.authorise();
-
-      const params = {
-        start: '2020-07-01',
-        end: '2020-07-31',
-      };
-
-      config.params = params;
-
-      axios.get(
-        `${process.env.VUE_APP_API_BASE_URL}bills`,
-        config,
-      )
-        .then((response) => {
-          this.formatExpectedBills(response.data.data);
-        });
-    },
-    formatExpectedBills(data) {
-      Object.keys(data).forEach((value, index) => {
-        const { name } = data[value].attributes;
-        const payDates = data[value].attributes.pay_dates;
-        const paid = data[value].attributes.paid_dates;
-        if (payDates.length > 0) {
-          this.$set(this.expectedBills, name, { id: index, paid: false });
-          if (paid.length > 0) {
-            this.$set(this.expectedBills, name, { id: index, paid: true });
-          }
-        }
-      });
     },
     fetchExpenditure() {
       const config = this.authorise();
@@ -153,8 +98,6 @@ export default {
     },
   },
   beforeMount() {
-    this.fetchAccount();
-    this.fetchExpectedBills();
     this.fetchExpenditure();
   },
 };
