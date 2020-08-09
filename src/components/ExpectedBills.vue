@@ -45,8 +45,9 @@
 import mixins from 'vue-typed-mixins';
 import axios from 'axios';
 import authoriseMixins from '@/mixins/authoriseMixins';
+import dateMixins from '@/mixins/dateMixins';
 
-export default mixins(authoriseMixins).extend({
+export default mixins(authoriseMixins, dateMixins).extend({
   name: 'ExpectedBills',
   data() {
     return {
@@ -57,10 +58,7 @@ export default mixins(authoriseMixins).extend({
     fetchExpectedBills() {
       const config = this.authorise();
 
-      const params = {
-        start: '2020-07-01',
-        end: '2020-07-31',
-      };
+      const params = this.getDate();
 
       config.params = params;
 
