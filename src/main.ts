@@ -9,6 +9,7 @@ import {
   faCheckCircle,
   faPlus,
   faListUl,
+  faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueApexCharts from 'vue-apexcharts';
@@ -25,6 +26,7 @@ library.add(
   faCheckCircle,
   faPlus,
   faListUl,
+  faTimesCircle,
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

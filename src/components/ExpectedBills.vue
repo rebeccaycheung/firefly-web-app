@@ -6,10 +6,11 @@
           <div class="name">{{ value }} </div>
           <div v-if="key.paid" class="paid">
             Paid
-            <font-awesome-icon icon="check-circle" class="icon"/>
+            <font-awesome-icon icon="check-circle" class="icon green"/>
           </div>
           <div v-else class="paid">
             Not paid
+            <font-awesome-icon icon="times-circle" class="icon red"/>
           </div>
         </div>
       </div>
@@ -18,10 +19,11 @@
           <div class="name">{{ value }}</div>
           <div v-if="key.paid" class="paid">
             Paid
-            <font-awesome-icon icon="check-circle" class="icon"/>
+            <font-awesome-icon icon="check-circle" class="icon green"/>
           </div>
           <div v-else class="paid">
             Not paid
+            <font-awesome-icon icon="times-circle" class="icon red"/>
           </div>
         </div>
       </div>
@@ -30,10 +32,11 @@
           <div class="name">{{ value }}</div>
           <div v-if="key.paid" class="paid">
             Paid
-            <font-awesome-icon icon="check-circle" class="icon"/>
+            <font-awesome-icon icon="check-circle" class="icon green"/>
           </div>
           <div v-else class="paid">
             Not paid
+            <font-awesome-icon icon="times-circle" class="icon red"/>
           </div>
         </div>
       </div>
@@ -122,7 +125,14 @@ export default mixins(authoriseMixins, dateMixins).extend({
 }
 
 .icon {
-  color: #00FF68;
   margin-left: 5px;
+}
+
+.red {
+  color: #FF6DC9;
+}
+
+.green {
+  color: #00FF68;
 }
 </style>
