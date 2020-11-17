@@ -1,6 +1,6 @@
 <template>
   <div class="heading">
-    <h1>{{ title }}</h1>
+    <h2>{{ title }}</h2>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-h1 {
+h2 {
     text-transform: uppercase;
 }
 </style>

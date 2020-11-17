@@ -1,28 +1,30 @@
 <template>
   <div class="home">
     <div class="dashboard">
-      <Heading title="Dashboard" />
+      <Heading title="" />
       <Dashboard />
     </div>
     <div class="links">
-      <Heading title="Quick Links" />
+      <Heading title="" />
       <QuickLinks />
     </div>
-    <div class="spending">
-      <Heading title="Spending" />
-      <Spending />
-    </div>
-    <div class="bills">
-      <Heading title="Expected Bills" />
-      <ExpectedBills />
-    </div>
-    <div class="summary">
-      <Heading title="Summary" />
-      <Summary />
-    </div>
-    <div class="expenditure">
-      <Heading title="Recent Expenditure" />
-      <Expenditure />
+    <div class="grid-container">
+      <div class="spending">
+        <Heading title="Spending" />
+        <Spending />
+      </div>
+      <div class="summary">
+        <Heading title="Accounts Summary" />
+        <Summary />
+      </div>
+      <div class="expenditure">
+        <Heading title="Recent Expenditure" />
+        <Expenditure />
+      </div>
+      <div class="bills">
+        <Heading title="Expected Bills" />
+        <ExpectedBills />
+      </div>
     </div>
   </div>
 </template>
@@ -51,6 +53,18 @@ export default {
 </script>
 
 <style scoped>
+.grid-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.links {
+  margin-top: 30px;
+}
+
 /* .home {
   display: grid;
   grid-template-columns: repeat( 3, 1fr );

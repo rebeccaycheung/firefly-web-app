@@ -10,6 +10,7 @@ export default Vue.extend({
           Authorization: `Bearer ${token}`,
           accept: 'application/json',
         },
+        params: {},
       };
 
       return config;

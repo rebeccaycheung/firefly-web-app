@@ -3,7 +3,7 @@
       <div class="item">
           <font-awesome-icon icon="balance-scale" class="icon"/>
           <div class="text">
-            <span class="number">${{ balance }}</span>
+            <span class="number">${{ parseFloat(balance).toFixed(2) }}</span>
             <br>
             BALANCE
           </div>

@@ -5,7 +5,7 @@
         <div class="row">
           <div class="name">{{ value }}</div>
           <div class="amount">
-            ${{ key.amount }}
+            ${{ parseFloat(key.amount).toFixed(2) }}
             <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
@@ -14,7 +14,7 @@
         <div class="first-row">
           <div class="name">{{ value }}</div>
           <div class="amount">
-            ${{ key.amount }}
+            ${{ parseFloat(key.amount).toFixed(2)  }}
             <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="last-row">
           <div class="name">{{ value }}</div>
           <div class="amount">
-            ${{ key.amount }}
+            ${{ parseFloat(key.amount).toFixed(2)  }}
             <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
@@ -43,6 +43,7 @@ export default mixins(authoriseMixins, dateMixins).extend({
   data() {
     return {
       expenditure: {},
+      limit: 5,
     };
   },
   methods: {

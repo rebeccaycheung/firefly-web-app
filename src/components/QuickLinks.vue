@@ -1,24 +1,20 @@
 <template>
     <div class="quick-links">
-        <div class="links">
-            <div class="link">
-                <font-awesome-icon icon="plus" class="icon pink-icon"/>
-                Add transaction
-            </div>
-            <div class="link last">
-                <font-awesome-icon icon="cart-plus" class="icon pink-icon"/>
-                Edit budget
-            </div>
+        <div class="link">
+            <font-awesome-icon icon="plus" class="icon pink-icon"/>
+            Transaction
         </div>
-        <div class="links">
-            <div class="link">
-                <font-awesome-icon icon="list-ul" class="icon blue-icon"/>
-                Edit accounts
-            </div>
-            <div class="link last">
-                <font-awesome-icon icon="calendar-plus" class="icon blue-icon"/>
-                Edit bills
-            </div>
+        <div class="link">
+            <font-awesome-icon icon="cart-plus" class="icon pink-icon"/>
+            Budget
+        </div>
+        <div class="link">
+            <font-awesome-icon icon="list-ul" class="icon blue-icon"/>
+            Accounts
+        </div>
+        <div class="link">
+            <font-awesome-icon icon="calendar-plus" class="icon blue-icon"/>
+            Bills
         </div>
     </div>
 </template>
@@ -28,12 +24,17 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'QuickLinks',
+  methods: {
+  },
 });
 </script>
 
 <style scoped>
 .quick-links {
     max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 .links {
@@ -43,12 +44,14 @@ export default Vue.extend({
 }
 
 .link {
-    padding: 2rem;
+    padding: 1rem;
     border-bottom: 3px solid #282A37;
-}
-
-.last {
-    border-bottom: none;
+    background-color: #44475A;
+    border-radius: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100px;
+    text-align: center;
 }
 
 .icon {
