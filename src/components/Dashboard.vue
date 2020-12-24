@@ -3,7 +3,7 @@
       <div class="item">
           <font-awesome-icon icon="balance-scale" class="icon"/>
           <div class="text">
-            <span class="number">${{ parseFloat(balance).toFixed(2) }}</span>
+            <span class="number">${{ balance }}</span>
             <br>
             BALANCE
           </div>
@@ -40,8 +40,9 @@ import mixins from 'vue-typed-mixins';
 import axios from 'axios';
 import authoriseMixins from '@/mixins/authoriseMixins';
 import dateMixins from '@/mixins/dateMixins';
+import round2DecimalMixins from '@/mixins/round2DecimalMixins';
 
-export default mixins(authoriseMixins, dateMixins).extend({
+export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
   name: 'Dashboard',
   data() {
     return {
@@ -64,9 +65,9 @@ export default mixins(authoriseMixins, dateMixins).extend({
         config,
       )
         .then((response) => {
-          this.balance = response.data['balance-in-AUD'].monetary_value;
-          this.bills = -response.data['bills-unpaid-in-AUD'].monetary_value;
-          this.netWorth = response.data['net-worth-in-AUD'].monetary_value;
+          this.balance = this.getRoundDecimal(response.data['balance-in-AUD'].monetary_value);
+          this.bills = this.getRoundDecimal(-response.data['bills-unpaid-in-AUD'].monetary_value);
+          this.netWorth = this.getRoundDecimal(response.data['net-worth-in-AUD'].monetary_value);
         });
 
       axios.get(
@@ -88,7 +89,7 @@ export default mixins(authoriseMixins, dateMixins).extend({
         config,
       )
         .then((response) => {
-          this.spending = response.data.data[0].attributes.amount - -spending;
+          this.spending = this.getRoundDecimal(response.data.data[0].attributes.amount - -spending);
         });
     },
   },

@@ -5,7 +5,7 @@
         <div class="row">
           <div class="name">{{ value }}</div>
           <div class="amount">
-            ${{ parseFloat(key.amount).toFixed(2) }}
+            ${{ key.amount }}
             <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
@@ -14,7 +14,7 @@
         <div class="first-row">
           <div class="name">{{ value }}</div>
           <div class="amount">
-            ${{ parseFloat(key.amount).toFixed(2)  }}
+            ${{ key.amount }}
             <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="last-row">
           <div class="name">{{ value }}</div>
           <div class="amount">
-            ${{ parseFloat(key.amount).toFixed(2)  }}
+            ${{ key.amount }}
             <font-awesome-icon icon="arrow-right" class="icon"/>
           </div>
         </div>
@@ -37,8 +37,9 @@ import mixins from 'vue-typed-mixins';
 import axios from 'axios';
 import authoriseMixins from '@/mixins/authoriseMixins';
 import dateMixins from '@/mixins/dateMixins';
+import round2DecimalMixins from '@/mixins/round2DecimalMixins';
 
-export default mixins(authoriseMixins, dateMixins).extend({
+export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
   name: 'Expenditure',
   data() {
     return {
@@ -80,7 +81,10 @@ export default mixins(authoriseMixins, dateMixins).extend({
         Object.keys(transactions).forEach((item, index) => {
           const { amount, description, type } = transactions[item];
           if (type === 'withdrawal') {
-            this.$set(this.expenditure, description, { id: index, amount });
+            this.$set(this.expenditure, description, {
+              id: index,
+              amount: this.getRoundDecimal(amount),
+            });
           }
         });
       });

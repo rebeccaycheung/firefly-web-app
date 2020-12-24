@@ -36,8 +36,9 @@
 import mixins from 'vue-typed-mixins';
 import axios from 'axios';
 import authoriseMixins from '@/mixins/authoriseMixins';
+import round2DecimalMixins from '@/mixins/round2DecimalMixins';
 
-export default mixins(authoriseMixins).extend({
+export default mixins(authoriseMixins, round2DecimalMixins).extend({
   name: 'Summary',
   data() {
     return {
@@ -62,7 +63,7 @@ export default mixins(authoriseMixins).extend({
         if (type === 'asset') {
           this.$set(this.accounts, name, {
             id: index,
-            amount: data[value].attributes.current_balance,
+            amount: this.getRoundDecimal(data[value].attributes.current_balance),
           });
         }
       });
