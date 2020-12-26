@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
+import Transactions from '../views/Transaction/Transactions.vue';
+import ViewTransaction from '../views/Transaction/ViewTransaction.vue';
+import AddTransaction from '../views/Transaction/AddTransaction.vue';
 
 Vue.use(VueRouter);
 
@@ -11,12 +14,19 @@ const routes: Array<RouteConfig> = [
     component: Home,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    path: '/transactions',
+    name: 'Transactions',
+    component: Transactions,
+  },
+  {
+    path: '/transaction',
+    name: 'ViewTransaction',
+    component: ViewTransaction,
+  },
+  {
+    path: '/transaction/add',
+    name: 'AddTransaction',
+    component: AddTransaction,
   },
 ];
 

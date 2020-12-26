@@ -19,7 +19,7 @@
       </div>
       <div class="expenditure">
         <Heading title="Recent Expenditure" />
-        <Expenditure />
+        <Expenditure limit=5 />
       </div>
       <div class="bills">
         <Heading title="Expected Bills" />

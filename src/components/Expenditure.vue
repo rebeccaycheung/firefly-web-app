@@ -1,32 +1,41 @@
 <template>
   <div class="expenditure">
     <div v-for="(key, value, index) in expenditure" :key="index">
-      <div v-if="index != Object.keys(expenditure).length - 1 && index != 0">
-        <div class="row">
-          <div class="name">{{ value }}</div>
-          <div class="amount">
-            ${{ key.amount }}
-            <font-awesome-icon icon="arrow-right" class="icon"/>
+      <div v-if="index <= limit">
+        <div v-if="index != Object.keys(expenditure).length - 1 && index != 0">
+          <router-link to="transaction">
+            <div class="row">
+              <div class="name">{{ value }}</div>
+              <div class="amount">
+                ${{ key.amount }}
+                <font-awesome-icon icon="arrow-right" class="icon"/>
+              </div>
+            </div>
+          </router-link>
+        </div>
+        <div v-else-if="index == 0">
+          <div class="first-row">
+            <div class="name">{{ value }}</div>
+            <div class="amount">
+              ${{ key.amount }}
+              <font-awesome-icon icon="arrow-right" class="icon"/>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="last-row">
+            <div class="name">{{ value }}</div>
+            <div class="amount">
+              ${{ key.amount }}
+              <font-awesome-icon icon="arrow-right" class="icon"/>
+            </div>
           </div>
         </div>
       </div>
-      <div v-else-if="index == 0">
-        <div class="first-row">
-          <div class="name">{{ value }}</div>
-          <div class="amount">
-            ${{ key.amount }}
-            <font-awesome-icon icon="arrow-right" class="icon"/>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <div class="last-row">
-          <div class="name">{{ value }}</div>
-          <div class="amount">
-            ${{ key.amount }}
-            <font-awesome-icon icon="arrow-right" class="icon"/>
-          </div>
-        </div>
+    </div>
+    <div v-if="limit !== Object.keys(expenditure).length">
+      <div class="showMore">
+        <router-link to="/transactions" class="showMoreText">show more</router-link>
       </div>
     </div>
   </div>
@@ -41,25 +50,15 @@ import round2DecimalMixins from '@/mixins/round2DecimalMixins';
 
 export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
   name: 'Expenditure',
+  props: {
+    limit: Number,
+  },
   data() {
     return {
       expenditure: {},
-      limit: 5,
     };
   },
   methods: {
-    authorise() {
-      const token = process.env.VUE_APP_TOKEN;
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          accept: 'application/json',
-        },
-      };
-
-      return config;
-    },
     fetchExpenditure() {
       const config = this.authorise();
 
@@ -82,7 +81,7 @@ export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
           const { amount, description, type } = transactions[item];
           if (type === 'withdrawal') {
             this.$set(this.expenditure, description, {
-              id: index,
+              id: data[value].id,
               amount: this.getRoundDecimal(amount),
             });
           }
@@ -98,22 +97,25 @@ export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
 
 <style scoped>
 .expenditure {
-    background-color: #44475A;
-    padding: 1rem;
-    border-radius: 8px;
+  background-color: #44475A;
+  padding: 1rem 1rem 2.5rem 1rem;
+  border-radius: 8px;
 }
 
 .row {
+  color: #fff;
   padding: 1rem 1rem 2rem 1rem;
   border-bottom: 2px solid #282A37;
 }
 
 .first-row {
+  color: #fff;
   padding: 0rem 1rem 2rem 1rem;
   border-bottom: 2px solid #282A37;
 }
 
 .last-row {
+  color: #fff;
   padding: 1rem 1rem 1rem 1rem;
   border-bottom: none;
 }
@@ -129,5 +131,14 @@ export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
 .icon {
   color: #6CECFF;
   margin-left: 5px;
+}
+
+.showMore {
+  float: right;
+  padding: 10px;
+}
+
+.showMoreText {
+  color: #6CECFF;
 }
 </style>
