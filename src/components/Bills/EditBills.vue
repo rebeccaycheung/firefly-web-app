@@ -36,7 +36,7 @@ export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
     },
   },
   created() {
-    this.fetchBills();
+    // this.fetchBills();
   },
 });
 </script>

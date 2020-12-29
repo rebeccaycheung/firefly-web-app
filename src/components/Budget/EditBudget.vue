@@ -55,7 +55,7 @@ export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
     },
   },
   created() {
-    this.fetchBudget();
+    // this.fetchBudget();
   },
 });
 </script>

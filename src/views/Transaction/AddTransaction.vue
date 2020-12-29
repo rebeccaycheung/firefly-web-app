@@ -12,20 +12,20 @@
                     <label for="source">Source account</label>
                     <br>
                     <select v-model="source">
-                        <option disabled value="">Please select one</option>
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
+                        <option value="none">None</option>
+                        <option v-for="(value) in accountOptions" :key="value">
+                          {{ value }}
+                        </option>
                     </select>
                 </div>
                 <div class="form-item">
                     <label for="destination">Destination account</label>
                     <br>
                     <select v-model="destination">
-                        <option disabled value="">Please select one</option>
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
+                        <option value="none">None</option>
+                        <option v-for="(value) in accountOptions" :key="value">
+                          {{ value }}
+                        </option>
                     </select>
                 </div>
                 <div class="form-item">
@@ -38,9 +38,9 @@
                     <br>
                     <select v-model="category">
                         <option disabled value="">Please select one</option>
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
+                        <option v-for="(value) in categoryOptions" :key="value">
+                          {{ value }}
+                        </option>
                     </select>
                 </div>
                 <div class="form-item">
@@ -54,8 +54,9 @@
                     <br>
                     <select v-model="budget">
                         <option disabled value="">Please select one</option>
-                        <option>A</option>
-                        <option>B</option>
+                        <option v-for="(value) in budgetOptions" :key="value">
+                          {{ value }}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -89,6 +90,9 @@ export default mixins(dateMixins, authoriseMixins).extend({
       budget: '',
       type: '',
       config: this.authorise(),
+      budgetOptions: [] as string[],
+      accountOptions: [] as string[],
+      categoryOptions: [] as string[],
     };
   },
   methods: {
@@ -98,7 +102,13 @@ export default mixins(dateMixins, authoriseMixins).extend({
         this.config,
       )
         .then((response) => {
-          console.log(response);
+          const { data } = response.data;
+          Object.keys(data).forEach((value) => {
+            const { name, type } = data[value].attributes;
+            if (type === 'asset') {
+              this.accountOptions.push(name);
+            }
+          });
         });
     },
     getCategory() {
@@ -107,7 +117,11 @@ export default mixins(dateMixins, authoriseMixins).extend({
         this.config,
       )
         .then((response) => {
-          console.log(response);
+          const { data } = response.data;
+          Object.keys(data).forEach((value) => {
+            const { name } = data[value].attributes;
+            this.categoryOptions.push(name);
+          });
         });
     },
     getBudget() {
@@ -116,7 +130,11 @@ export default mixins(dateMixins, authoriseMixins).extend({
         this.config,
       )
         .then((response) => {
-          console.log(response);
+          const { data } = response.data;
+          Object.keys(data).forEach((value) => {
+            const { name } = data[value].attributes;
+            this.budgetOptions.push(name);
+          });
         });
     },
     submitTransaction() {
@@ -182,6 +200,11 @@ export default mixins(dateMixins, authoriseMixins).extend({
         });
       console.log('submit');
     },
+  },
+  created() {
+    this.getSourceAndDestination();
+    this.getCategory();
+    this.getBudget();
   },
 });
 </script>
