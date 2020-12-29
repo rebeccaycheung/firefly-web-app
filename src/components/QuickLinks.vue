@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import AddTransaction from '@/views/Transaction/AddTransaction.vue';
+import AddTransaction from '@/components/Transaction/AddTransaction.vue';
 import EditBudget from '@/components/Budget/EditBudget.vue';
 import EditBills from '@/components/Bills/EditBills.vue';
 

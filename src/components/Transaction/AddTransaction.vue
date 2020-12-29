@@ -82,8 +82,8 @@ export default mixins(dateMixins, authoriseMixins).extend({
     return {
       currentDate: this.getCurrentDate(),
       description: '',
-      source: '',
-      destination: '',
+      source: 'none',
+      destination: 'none',
       amount: 0,
       category: '',
       date: '',
