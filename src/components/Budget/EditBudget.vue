@@ -8,54 +8,97 @@
             <br>
             <input v-model.trim="total" type="number">
           </div>
-          <div class="form-item">
-            <label for="spending">Spending</label>
+          <div v-for="(name, index) in budgetOptions" :key="index" class="form-item">
+            <label for="name.value">{{ name.value }}</label>
             <br>
-            <input v-model.trim="spending" type="number">
-          </div>
-          <div class="form-item">
-            <label for="bills">Bills</label>
-            <br>
-            <input v-model.trim="bills" type="number">
+            <input v-model.trim="budgetAmount[name.value]" type="number">
           </div>
         </div>
       </form>
+      <apexchart width="300" type="donut" :options="options" :series="series"></apexchart>
       <button v-on:click="save" class="save">Save</button>
   </div>
 </template>
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins';
-import axios from 'axios';
 import Heading from '@/components/Heading.vue';
 import authoriseMixins from '@/mixins/authoriseMixins';
 import dateMixins from '@/mixins/dateMixins';
 import round2DecimalMixins from '@/mixins/round2DecimalMixins';
+import budgetMixins from '@/mixins/budgetMixins';
 
-export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
+export default mixins(authoriseMixins, dateMixins, round2DecimalMixins, budgetMixins).extend({
   name: 'EditBudget',
   components: {
     Heading,
   },
   data() {
     return {
+      budgetOptions: [] as any[],
+      budgetAmount: {},
+      total: null,
+      options: {
+        labels: [] as string[],
+        dataLabels: {
+          enabled: false,
+        },
+        legend: {
+          labels: {
+            colors: '#FFFFFF',
+          },
+          markers: {
+            radius: 3,
+          },
+          onItemClick: {
+            toggleDataSeries: false,
+          },
+        },
+        stroke: {
+          show: false,
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              size: '60%',
+              labels: {
+                show: true,
+                total: {
+                  show: true,
+                  showAlways: true,
+                  label: 'TOTAL',
+                  color: '#FFFFFF',
+                },
+                value: {
+                  show: true,
+                  color: '#FFFFFF',
+                },
+              },
+            },
+          },
+        },
+      },
+      series: [] as number[],
     };
   },
   methods: {
-    fetchBudget() {
-      const config = this.authorise();
-
-      axios.get(
-        `${process.env.VUE_APP_API_BASE_URL}budget`,
-        config,
-      )
-        .then((response) => {
-          console.log(response);
-        });
+    fetchBudgetLimits() {
+      this.budgetOptions.forEach((budget, index) => {
+        const limit = this.getBudgetsLimit(budget.key);
+        this.series.push(limit);
+        this.options.labels.push(budget.value);
+      });
+    },
+    async fetchBudget() {
+      this.budgetOptions = await this.getBudgets();
+      this.fetchBudgetLimits();
+    },
+    save() {
+      console.log('hi');
     },
   },
   created() {
-    // this.fetchBudget();
+    this.fetchBudget();
   },
 });
 </script>

@@ -6,6 +6,7 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/camelcase
 import mixins from 'vue-typed-mixins';
 import axios from 'axios';
 import Heading from '@/components/Heading.vue';
@@ -41,26 +42,18 @@ export default mixins(authoriseMixins, dateMixins, round2DecimalMixins).extend({
         const {
           amount,
           description,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           category_name,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           budget_name,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           source_name,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           destination_name,
           type,
         } = transactions[item];
         if (type === 'withdrawal') {
           this.$set(this.transaction, description, {
             amount: this.getRoundDecimal(amount),
-            // eslint-disable-next-line @typescript-eslint/camelcase
             category: category_name,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             budget: budget_name,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             source: source_name,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             destination: destination_name,
             type,
           });

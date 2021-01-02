@@ -54,8 +54,8 @@
                     <br>
                     <select v-model="budget">
                         <option disabled value="">Please select one</option>
-                        <option v-for="(value) in budgetOptions" :key="value">
-                          {{ value }}
+                        <option v-for="(name, index) in budgetOptions" :key="index">
+                          {{ name.value }}
                         </option>
                     </select>
                 </div>
@@ -72,8 +72,9 @@ import axios from 'axios';
 import Heading from '@/components/Heading.vue';
 import dateMixins from '@/mixins/dateMixins';
 import authoriseMixins from '@/mixins/authoriseMixins';
+import budgetMixins from '@/mixins/budgetMixins';
 
-export default mixins(dateMixins, authoriseMixins).extend({
+export default mixins(dateMixins, authoriseMixins, budgetMixins).extend({
   name: 'AddTransaction',
   components: {
     Heading,
@@ -124,18 +125,8 @@ export default mixins(dateMixins, authoriseMixins).extend({
           });
         });
     },
-    getBudget() {
-      axios.get(
-        `${process.env.VUE_APP_API_BASE_URL}budgets`,
-        this.config,
-      )
-        .then((response) => {
-          const { data } = response.data;
-          Object.keys(data).forEach((value) => {
-            const { name } = data[value].attributes;
-            this.budgetOptions.push(name);
-          });
-        });
+    getBudgetOptions() {
+      this.budgetOptions = this.getBudgets();
     },
     submitTransaction() {
       const transaction = {
@@ -204,7 +195,7 @@ export default mixins(dateMixins, authoriseMixins).extend({
   created() {
     this.getSourceAndDestination();
     this.getCategory();
-    this.getBudget();
+    this.getBudgetOptions();
   },
 });
 </script>
